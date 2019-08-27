@@ -1,0 +1,75 @@
+https://apifoliofirst.uataws.foliofn.com/bod/members/loginAvailable/hfghgfhfghgf
+
+
+https://apifoliofirst.uataws.foliofn.com/bod/member/create
+{
+  "loginId": "hfghgfhfghgf",
+  "firstName": "ghjgj",
+  "middleName": "g",
+  "lastName": "jghjghj",
+  "suffix": null,
+  "tid": "112-21-1222",
+  "dateOfBirth": "1960-01-01",
+  "email1": "hjghjgh@d.hjkhjkhj",
+  "primaryAddress": {
+    "line1": "hgj",
+    "line2": "",
+    "city": "ghjgh",
+    "state": "AL",
+    "zipcode": "64564",
+    "country": "US"
+  },
+  "eveningTelephone": "3453453545",
+  "dayTelephone": "3453453545",
+  "employmentStatus": "Unemployed",
+  "employerAddress": null,
+  "employerName": null,
+  "occupationType": null,
+  "finraAffiliated": false,
+  "directorOrTenPercentShareholder": false,
+  "directorOrTenPercentShareholderCompany": [],
+  "netWorth": 2,
+  "liquidNetWorth": 2,
+  "annualIncome": 2,
+  "citizenship": "C",
+  "residenceCountry": "US",
+  "accountType": "Individual",
+  "memberAttributes": {},
+  "mailingAddress": null
+}
+
+https://apifoliofirst.uataws.foliofn.com/bod/accounts/create
+accountName: "Individual839"
+accountType: "I"
+billingPlanOid: "7133701811888608864"
+primaryAccountOwner: "hfghgfhfghgf"
+w9BackupWithholding: "N"
+
+https://apifoliofirst.uataws.foliofn.com/bod/accounts/signature/create
+accountNumber: "RJ7180400H"
+loginId: "hfghgfhfghgf"
+signatureData: "data:image/png;base64,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"
+signatureImageEncoding: "PNG"
+signatureMethod: "SIGNATURE_IMAGE"
+w9Withold: false
+
+
+
+
+ 
+
+Basic Info                                                         –  Only required fields will be shown, API integration of available user name will be done. Marketing data capture will be skipped.
+
+Contact Info                                                    –  Only Required fields will be shown, different mailing address will not be implemented
+
+Verify Identity                                                –  All required fields will be shown
+
+Verify finance                                                 –  All required fields will be shown
+
+Employment Page:                                        -  Only unemployed status will be covered as default status
+
+Account Selection Page                                – 7 account types will be shown but only individual will be functional
+
+Customer Agreement Page                         – Draw a signature will be skipped and only first name and last name will be implemented as signature.
+
+Congratulation Page:                                    - Congratulation message will be shown.
