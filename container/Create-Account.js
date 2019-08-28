@@ -129,6 +129,9 @@ export default function CreateAccount() {
               AccountCreateConfig.FormSequence[getFormStep] ===
               AccountCreateConfig.Forms.accountTypeSelectionForm
             ) {
+              const dob = new Date(
+                getVerifyIdentityForm.verifyIdentityForm.birthDate.value
+              ).toISOString();
               const formData = {
                 loginId: getBasicForm.basicForm.username.value,
                 firstName: getBasicForm.basicForm.firstName.value,
@@ -136,8 +139,7 @@ export default function CreateAccount() {
                 lastName: getBasicForm.basicForm.lastName.value,
                 suffix: null,
                 tid: getVerifyIdentityForm.verifyIdentityForm.ssn.value,
-                dateOfBirth:
-                  getVerifyIdentityForm.verifyIdentityForm.birthDate.value,
+                dateOfBirth: dob,
                 email1: getBasicForm.basicForm.email.value,
                 primaryAddress: {
                   line1: getAddressForm.addressForm.address1.value,

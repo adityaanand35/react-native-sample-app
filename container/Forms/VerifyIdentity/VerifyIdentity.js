@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { StyleSheet, Text, View, ScrollView } from "react-native";
 
 import Input from "../../../component/UI/Input/Input";
-import { ListOfCitizenship } from './VerifyIdentity.const';
+import { ListOfCitizenship } from "./VerifyIdentity.const";
 
 class VerifyIdentity extends Component {
   state = {
@@ -41,7 +41,8 @@ class VerifyIdentity extends Component {
         elementConfig: {
           keyboardType: "number-pad",
           secureTextEntry: true,
-          label: "Confirm Social Security Number*"
+          label: "Confirm Social Security Number*",
+          validationError: ""
         },
         value: "",
         validation: {
@@ -96,11 +97,27 @@ class VerifyIdentity extends Component {
     const updatedFormElement = {
       ...updatedVerifyIdentityForm[inputIdentifier]
     };
+    if(inputIdentifier === 'birthDate') {
+      if(event !== '/' && event.length === 2) {
+        event += '/';
+      }
+      if(event !== '/' && event.length === 5) {
+        event += '/';
+      }
+    }
     updatedFormElement.value = event;
+    
+
     updatedFormElement.valid = this.checkValidity(
       updatedFormElement.value,
       updatedFormElement.validation
     );
+    if (inputIdentifier === "confirmSSN") {
+      if (updatedFormElement.value !== updatedVerifyIdentityForm["ssn"].value) {
+        updatedFormElement.valid = false;
+        updatedFormElement.validation.validationError = "Social Security Numbers do not match";
+      }
+    }
     updatedFormElement.touched = true;
     updatedVerifyIdentityForm[inputIdentifier] = updatedFormElement;
 
@@ -115,10 +132,16 @@ class VerifyIdentity extends Component {
     });
     this.props.getData(this.state);
 
-    this.setState((prevState) => {
-      this.props.getData({ verifyIdentityForm: updatedVerifyIdentityForm, formIsValid: formIsValid });
-      return { financeForm: updatedVerifyIdentityForm, formIsValid: formIsValid };
-  });
+    this.setState(prevState => {
+      this.props.getData({
+        verifyIdentityForm: updatedVerifyIdentityForm,
+        formIsValid: formIsValid
+      });
+      return {
+        financeForm: updatedVerifyIdentityForm,
+        formIsValid: formIsValid
+      };
+    });
   };
 
   render() {

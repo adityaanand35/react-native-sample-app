@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, FlatList } from "react-native";
 import axios from "axios";
 
 import Input from "../../../component/UI/Input/Input";
-import Button from "../component/UI/Button/button";
+import Button from "../../../component/UI/Button/button";
 
 class CustomerAgreement extends Component {
   state = {
