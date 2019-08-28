@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, View, Picker, Text, TouchableHighlight } from "react-native";
+import { StyleSheet, View, Picker, Text, TouchableOpacity } from "react-native";
 import { TextField } from "react-native-material-textfield";
 
 const input = props => {
@@ -8,7 +8,11 @@ const input = props => {
   let validationError = null;
   if (props.invalid && props.shouldValidate && props.touched) {
     // inputClasses.push(classes.Invalid);
-    validationError = "Please enter a valid value!";
+    if (props.shouldValidate.validationError) {
+      validationError = props.shouldValidate.validationError;
+    } else {
+      validationError = "Please enter a valid value!";
+    }
   }
   switch (props.elementType) {
     case "input":
@@ -31,7 +35,7 @@ const input = props => {
             selectedValue={props.value}
             style={styles.picker}
             onValueChange={props.changed}
-            itemStyle={{color: '#c4c4c4'}}
+            itemStyle={{ color: "#c4c4c4" }}
           >
             {Object.keys(props.elementConfig.options).map(option => {
               return (
@@ -54,33 +58,52 @@ const input = props => {
       break;
     case "radio":
       inputElement = (
-        <View style={styles.radio} onPress={props.changed}>
-          <View
-            style={[
-              {
-                height: 24,
-                width: 24,
-                borderRadius: 12,
-                borderWidth: 2,
-                borderColor: "#000",
-                alignItems: "center",
-                justifyContent: "center"
-              },
-              props.style
-            ]}
-          >
-            {props.selected ? (
-              <View
-                style={{
-                  height: 12,
-                  width: 12,
-                  borderRadius: 6,
-                  backgroundColor: "#000"
-                }}
-              />
-            ) : null}
+        <TouchableOpacity onPress={props.changed}>
+          <View style={styles.radio}>
+            <View
+              style={[
+                {
+                  height: 24,
+                  width: 24,
+                  borderRadius: 12,
+                  borderWidth: 2,
+                  borderColor: "#000",
+                  alignItems: "center",
+                  justifyContent: "center"
+                },
+                props.style
+              ]}
+            >
+              {props.selected ? (
+                <View
+                  style={{
+                    height: 12,
+                    width: 12,
+                    borderRadius: 6,
+                    backgroundColor: "#000"
+                  }}
+                />
+              ) : null}
+            </View>
+            <Text>{props.elementConfig.label}</Text>
           </View>
-          <Text>{props.elementConfig.label}</Text>
+        </TouchableOpacity>
+      );
+      break;
+    case "draw-signature":
+      inputElement = (
+        <View>
+          <Text>Use the keyboard to enter your full name:</Text>
+          <TextField
+            style={styles.inputField}
+            onChangeText={props.changed}
+            inputContainerPadding={12}
+            value={props.value}
+            tintColor="rgb(255, 0, 136)"
+            error={validationError}
+            {...props.elementConfig}
+          />
+          <Text>{props.fullName} (type exactly)</Text>
         </View>
       );
       break;
@@ -90,6 +113,7 @@ const input = props => {
           style={styles.inputField}
           onChangeText={props.changed}
           value={props.value}
+          inputContainerPadding={12}
           tintColor="rgb(255, 0, 136)"
           error={validationError}
           {...props.elementConfig}
@@ -111,6 +135,6 @@ const styles = StyleSheet.create({
   radio: {
     flexDirection: "row",
     justifyContent: "flex-start",
-    alignItems: "flex-start",
+    alignItems: "flex-start"
   }
 });

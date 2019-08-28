@@ -16,7 +16,7 @@ class AccountType extends Component {
         },
         valid: false,
         touched: false,
-        selected: true
+        selected: false
       },
       joint: {
         elementType: "radio",
@@ -71,7 +71,7 @@ class AccountType extends Component {
         selected: false
       }
     },
-    formIsValid: false
+    formIsValid: true
   };
 
   checkValidity(value, rules) {
@@ -89,27 +89,33 @@ class AccountType extends Component {
   }
 
   inputChangedHandler = (event, inputIdentifier) => {
-    console.log('event', event, inputIdentifier);
-    const updatedAccountTypeForm = {
+    console.log("event", event, inputIdentifier);
+    let updatedAccountTypeForm = {
       ...this.state.accountTypeForm
     };
+    Object.keys(updatedAccountTypeForm).forEach(accType => {
+      updatedAccountTypeForm[accType].selected = false;
+    });
     const updatedFormElement = {
       ...updatedAccountTypeForm[inputIdentifier]
     };
-    updatedFormElement.value = event;
-    updatedFormElement.valid = this.checkValidity(
-      updatedFormElement.value,
-      updatedFormElement.validation
-    );
+
+    updatedFormElement.selected = !updatedFormElement.selected;
+
     updatedFormElement.touched = true;
     updatedAccountTypeForm[inputIdentifier] = updatedFormElement;
+    const formIsValid = true;
 
-    let formIsValid = true;
-    for (let inputIdentifier in updatedAccountTypeForm) {
-      formIsValid = updatedAccountTypeForm[inputIdentifier].valid && formIsValid;
-    }
-    this.setState({ accountTypeForm: updatedAccountTypeForm, formIsValid: formIsValid });
-    this.props.getData(this.state);
+    this.setState(prevState => {
+      this.props.getData({
+        accountTypeForm: updatedAccountTypeForm,
+        formIsValid: formIsValid
+      });
+      return {
+        accountTypeForm: updatedAccountTypeForm,
+        formIsValid: formIsValid
+      };
+    });
   };
 
   render() {

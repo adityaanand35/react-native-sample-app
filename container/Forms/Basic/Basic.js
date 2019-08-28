@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { StyleSheet, Text, View, ScrollView } from "react-native";
+import axios from "axios";
 
 import Input from "../../../component/UI/Input/Input";
 
@@ -40,7 +41,8 @@ class Basic extends Component {
         },
         value: "",
         validation: {
-          required: true
+          required: true,
+          regex: "^\\w+@[a-zA-Z_]+?\\.[a-zA-Z]{2,3}$"
         },
         valid: false,
         touched: false
@@ -53,13 +55,16 @@ class Basic extends Component {
         },
         value: "",
         validation: {
-          required: true
+          required: true,
+          minLength: 8,
+          validationError: ""
         },
         valid: false,
         touched: false
       }
     },
-    formIsValid: false
+    formIsValid: false,
+    httpCall: new Date()
   };
   constructor(props) {
     super(props);
@@ -75,15 +80,19 @@ class Basic extends Component {
     }
     if (rules && rules.minLength) {
       isValid = value.length >= rules.minLength && isValid;
+      rules.validationError = `Minimum ${rules.minLength} characters are required`;
     }
     if (rules && rules.maxLength) {
       isValid = value.length <= rules.maxLength && isValid;
+    }
+    if (rules && rules.regex) {
+      let exp = new RegExp(rules.regex);
+      isValid = exp.test(value);
     }
     return isValid;
   }
 
   inputChangedHandler = (event, inputIdentifier) => {
-    console.log("event", event, inputIdentifier);
     const updatedBasicForm = {
       ...this.state.basicForm
     };
@@ -102,10 +111,41 @@ class Basic extends Component {
     for (let inputIdentifier in updatedBasicForm) {
       formIsValid = updatedBasicForm[inputIdentifier].valid && formIsValid;
     }
-    this.setState({ basicForm: updatedBasicForm, formIsValid: formIsValid });
-    this.props.getData(this.state);
+    this.setState(prevState => {
+      this.props.getData({
+        basicForm: updatedBasicForm,
+        formIsValid: formIsValid
+      });
+      return { basicForm: updatedBasicForm, formIsValid: formIsValid };
+    });
+
+    if (inputIdentifier === "username" && updatedFormElement.valid) {
+      let url =
+        "https://apifoliofirst.uataws.foliofn.com/bod/members/loginAvailable/";
+      if (new Date().getTime() - this.state.httpCall.getTime() > 1000) {
+        this.getUsernameValidity(updatedBasicForm, updatedFormElement, url);
+        this.state.httpCall = new Date();
+      }
+    }
   };
 
+  getUsernameValidity(updatedBasicForm, updatedFormElement, url) {
+    axios
+      .get(url + updatedFormElement.value)
+      .then(function(response) {
+        // handle success
+        console.log(response);
+      })
+      .catch(function(error) {
+        // handle error
+        console.log(error);
+        updatedFormElement.valid = false;
+        updatedFormElement.validation.validationError =
+          "Username already exists";
+        updatedBasicForm[inputIdentifier] = updatedFormElement;
+        this.setState({ basicForm: updatedBasicForm });
+      });
+  }
   render() {
     const formElementsArray = [];
     for (let key in this.state.basicForm) {
@@ -127,7 +167,7 @@ class Basic extends Component {
               let fieldHeader = null;
               if (formElement.id === "username") {
                 fieldHeader = (
-                  <Text style={styles.para} key='usernameHelpText'>
+                  <Text style={styles.para} key="usernameHelpText">
                     The username must be 8-32 characters long. It cannot contain
                     symbols or spaces and is not case sensitive.
                     <Text style={styles.makeBold}>

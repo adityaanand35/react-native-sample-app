@@ -5,7 +5,8 @@ export default class AccountCreateConfig {
         verifyIdentityInfoForm: 'verifyIdentity',
         financeInfoForm: 'finance',
         employmentInfoForm: 'employment',
-        accountTypeSelectionForm: 'accountType'
+        accountTypeSelectionForm: 'accountType',
+        getSignatureForm: 'signature'
     }
        
     static FormSequence = [
@@ -14,5 +15,6 @@ export default class AccountCreateConfig {
         this.Forms.verifyIdentityInfoForm,
         this.Forms.financeInfoForm,
         this.Forms.accountTypeSelectionForm,
+        this.Forms.getSignatureForm
     ]
 }

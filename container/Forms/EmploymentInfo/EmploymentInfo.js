@@ -4,7 +4,7 @@ import Input from "../../../component/UI/Input/Input";
 
 class EmploymentInfo extends Component {
   state = {
-    verifyIdentityForm: {
+    employmentInfoForm: {
       firstName: {
         elementType: "input",
         elementConfig: {
@@ -17,12 +17,12 @@ class EmploymentInfo extends Component {
         },
         valid: false,
         touched: false
-      },
+      }
     },
     formIsValid: false
   };
   constructor(props) {
-    super(props); 
+    super(props);
     if (Object.keys(props.initialState).length) {
       this.state = props.initialState;
     }
@@ -43,12 +43,12 @@ class EmploymentInfo extends Component {
   }
 
   inputChangedHandler = (event, inputIdentifier) => {
-    console.log('event', event, inputIdentifier);
-    const updatedVerifyIdentityForm = {
-      ...this.state.verifyIdentityForm
+    console.log("event", event, inputIdentifier);
+    const updatedEmploymentInfoForm = {
+      ...this.state.EmploymentInfoForm
     };
     const updatedFormElement = {
-      ...updatedVerifyIdentityForm[inputIdentifier]
+      ...updatedEmploymentInfoForm[inputIdentifier]
     };
     updatedFormElement.value = event;
     updatedFormElement.valid = this.checkValidity(
@@ -56,22 +56,35 @@ class EmploymentInfo extends Component {
       updatedFormElement.validation
     );
     updatedFormElement.touched = true;
-    updatedVerifyIdentityForm[inputIdentifier] = updatedFormElement;
+    updatedEmploymentInfoForm[inputIdentifier] = updatedFormElement;
 
     let formIsValid = true;
-    for (let inputIdentifier in updatedVerifyIdentityForm) {
-      formIsValid = updatedVerifyIdentityForm[inputIdentifier].valid && formIsValid;
+    for (let inputIdentifier in updatedEmploymentInfoForm) {
+      formIsValid =
+        updatedEmploymentInfoForm[inputIdentifier].valid && formIsValid;
     }
-    this.setState({ verifyIdentityForm: updatedVerifyIdentityForm, formIsValid: formIsValid });
-    this.props.getData(this.state);
+
+    this.setState(prevState => {
+      this.props.getData({
+        employmentInfoForm: updatedEmploymentInfoForm,
+        formIsValid: formIsValid
+      });
+      return {
+        financeForm: updatedEmploymentInfoForm,
+        formIsValid: formIsValid
+      };
+    });
+
+    // this.setState({ EmploymentInfoForm: updatedEmploymentInfoForm, formIsValid: formIsValid });
+    // this.props.getData(this.state);
   };
 
   render() {
     const formElementsArray = [];
-    for (let key in this.state.verifyIdentityForm) {
+    for (let key in this.state.EmploymentInfoForm) {
       formElementsArray.push({
         id: key,
-        config: this.state.verifyIdentityForm[key]
+        config: this.state.EmploymentInfoForm[key]
       });
     }
     return (
@@ -79,7 +92,8 @@ class EmploymentInfo extends Component {
         <View style={styles.container}>
           <Text style={styles.pageHeader}>Verify your identity</Text>
           <Text style={styles.para}>
-            Financial regulations require that we verify your identity in order to open an account.
+            Financial regulations require that we verify your identity in order
+            to open an account.
           </Text>
           {formElementsArray.map(formElement => {
             return (

@@ -91,11 +91,19 @@ class Finance extends Component {
     for (let inputIdentifier in updatedFinanceForm) {
       formIsValid = updatedFinanceForm[inputIdentifier].valid && formIsValid;
     }
-    this.setState({
-      financeForm: updatedFinanceForm,
-      formIsValid: formIsValid
+    // this.setState({
+    //   financeForm: updatedFinanceForm,
+    //   formIsValid: formIsValid
+    // });
+    // this.props.getData(this.state);
+
+    this.setState(prevState => {
+      this.props.getData({
+        financeForm: updatedFinanceForm,
+        formIsValid: formIsValid
+      });
+      return { financeForm: updatedfinanceForm, formIsValid: formIsValid };
     });
-    this.props.getData(this.state);
   };
 
   componentDidMount() {

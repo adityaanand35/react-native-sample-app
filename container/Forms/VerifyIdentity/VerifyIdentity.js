@@ -24,11 +24,14 @@ class VerifyIdentity extends Component {
         elementType: "input",
         elementConfig: {
           keyboardType: "number-pad",
+          secureTextEntry: true,
           label: "Social Security Number*"
         },
         value: "",
         validation: {
-          required: true
+          required: true,
+          minLength: 9,
+          maxLength: 9
         },
         valid: false,
         touched: false
@@ -37,11 +40,14 @@ class VerifyIdentity extends Component {
         elementType: "input",
         elementConfig: {
           keyboardType: "number-pad",
+          secureTextEntry: true,
           label: "Confirm Social Security Number*"
         },
         value: "",
         validation: {
-          required: true
+          required: true,
+          minLength: 9,
+          maxLength: 9
         },
         valid: false,
         touched: false
@@ -108,6 +114,11 @@ class VerifyIdentity extends Component {
       formIsValid: formIsValid
     });
     this.props.getData(this.state);
+
+    this.setState((prevState) => {
+      this.props.getData({ verifyIdentityForm: updatedVerifyIdentityForm, formIsValid: formIsValid });
+      return { financeForm: updatedVerifyIdentityForm, formIsValid: formIsValid };
+  });
   };
 
   render() {

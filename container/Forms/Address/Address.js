@@ -66,7 +66,9 @@ class Address extends Component {
         },
         value: "",
         validation: {
-          required: true
+          required: true,
+          maxLength: 5,
+          minLength: 5
         },
         valid: false,
         touched: false
@@ -79,7 +81,9 @@ class Address extends Component {
         },
         value: "",
         validation: {
-          required: true
+          required: true,
+          minLength: 10,
+          maxLength: 14
         },
         valid: false,
         touched: false
@@ -92,7 +96,9 @@ class Address extends Component {
         },
         value: "",
         validation: {
-          required: false
+          required: false,
+          minLength: 10,
+          maxLength: 14
         },
         valid: true,
         touched: false
@@ -158,7 +164,9 @@ class Address extends Component {
         },
         value: "",
         validation: {
-          required: true
+          required: true,
+          maxLength: 5,
+          minLength: 5
         },
         valid: false,
         touched: false
@@ -220,15 +228,23 @@ class Address extends Component {
       formIsValid = updatedAddressForm[inputIdentifier].valid && formIsValid;
     }
     isMailingForm
-      ? this.setState({
-          mailingAddressForm: updatedAddressForm,
-          formIsValid: formIsValid
+      ? this.setState(prevState => {
+          this.props.getData({
+            mailingAddressForm: updatedAddressForm,
+            formIsValid: formIsValid
+          });
+          return {
+            mailingAddressForm: updatedAddressForm,
+            formIsValid: formIsValid
+          };
         })
-      : this.setState({
-          addressForm: updatedAddressForm,
-          formIsValid: formIsValid
+      : this.setState(prevState => {
+          this.props.getData({
+            addressForm: updatedAddressForm,
+            formIsValid: formIsValid
+          });
+          return { addressForm: updatedAddressForm, formIsValid: formIsValid };
         });
-    this.props.getData(this.state);
   };
 
   toggleMailingAddress = () => {
