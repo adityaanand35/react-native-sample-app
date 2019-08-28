@@ -85,7 +85,7 @@ const input = props => {
                 />
               ) : null}
             </View>
-            <Text>{props.elementConfig.label}</Text>
+            <Text style={styles.accountType}>{props.elementConfig.label}</Text>
           </View>
         </TouchableOpacity>
       );
@@ -136,5 +136,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "flex-start",
     alignItems: "flex-start"
+  },
+  accountType: {
+    marginLeft: 10
   }
+
 });

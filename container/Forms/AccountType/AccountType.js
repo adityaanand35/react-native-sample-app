@@ -132,7 +132,7 @@ class AccountType extends Component {
           <Text style={styles.pageHeader}>Personal Accounts</Text>
           {formElementsArray.map(formElement => {
             return (
-              <View key={formElement.id}>
+              <View key={formElement.id} style={styles.accountType}>
                 <Input
                   elementType={formElement.config.elementType}
                   elementConfig={formElement.config.elementConfig}
@@ -170,5 +170,8 @@ const styles = StyleSheet.create({
   },
   para: {
     marginTop: 10
+  },
+  accountType: {
+    marginTop: 20
   }
 });
