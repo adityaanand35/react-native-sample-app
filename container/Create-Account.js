@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from "./node_modules/react";
 import { StyleSheet, View } from "react-native";
-import axios from "axios";
+import axios from "./node_modules/axios";
 
 import Basic from "./Forms/Basic/Basic";
 import Address from "./Forms/Address/Address";
@@ -18,6 +18,7 @@ export default function CreateAccount() {
   const [getAddressForm, setAddressForm] = useState({});
   const [getVerifyIdentityForm, setVerifyIdentityForm] = useState({});
   const [getFinanceForm, setFinanceForm] = useState({});
+  const [getAccountNumber, setAccountNumber] = useState('');
   let formToRender = null;
   switch (AccountCreateConfig.FormSequence[getFormStep]) {
     case AccountCreateConfig.Forms.basicInfoForm:
@@ -56,9 +57,6 @@ export default function CreateAccount() {
       formToRender = (
         <AccountType getData={data => getAccountTypeFormData(data)} />
       );
-      // useEffect(() => {
-      //   setNextBtnDisabled(false);
-      // });
       break;
     case AccountCreateConfig.Forms.getSignatureForm:
       formToRender = (
@@ -73,6 +71,103 @@ export default function CreateAccount() {
       break;
     default:
       formToRender = null;
+  }
+
+  memberFormData = () => {
+    const dob = new Date(
+      getVerifyIdentityForm.verifyIdentityForm.birthDate.value
+    ).toISOString();
+
+    return {
+      loginId: getBasicForm.basicForm.username.value,
+      firstName: getBasicForm.basicForm.firstName.value,
+      middleName: "",
+      lastName: getBasicForm.basicForm.lastName.value,
+      suffix: null,
+      tid: getVerifyIdentityForm.verifyIdentityForm.ssn.value,
+      dateOfBirth: dob,
+      email1: getBasicForm.basicForm.email.value,
+      primaryAddress: {
+        line1: getAddressForm.addressForm.address1.value,
+        line2: getAddressForm.addressForm.address2.value,
+        city: getAddressForm.addressForm.city.value,
+        state: getAddressForm.addressForm.state.value,
+        zipcode: getAddressForm.addressForm.zipcode.value,
+        country: "US"
+      },
+      eveningTelephone: getAddressForm.addressForm.primaryPhone.value,
+      dayTelephone: getAddressForm.addressForm.secondaryPhone.value,
+      employmentStatus: "Unemployed",
+      employerAddress: null,
+      employerName: null,
+      occupationType: null,
+      finraAffiliated: false,
+      directorOrTenPercentShareholder: false,
+      directorOrTenPercentShareholderCompany: [],
+      netWorth: 2,
+      liquidNetWorth: 2,
+      annualIncome: 2,
+      citizenship: "C",
+      residenceCountry: "US",
+      accountType: "Individual",
+      memberAttributes: {},
+      mailingAddress: null
+    };
+  }
+
+  getAccountData = () => {
+    const accName =
+      "Individual" + Math.floor(100 + Math.random() * 900);
+    return {
+      accountName: accName,
+      accountType: "I",
+      billingPlanOid: "7133701811888608864",
+      primaryAccountOwner:
+        getBasicForm.basicForm.username.value,
+      w9BackupWithholding: "N"
+    }
+  }
+
+  createMember = () => {
+    axios.post(
+        AccountCreateConfig.memberCreateURL,
+        memberFormData()
+      )
+      .then(response => {
+        console.log(response.data);
+        axios.post(
+            AccountCreateConfig.accountCreateURL,
+            getAccountData()
+          )
+          .then(response => {
+            console.log(response.data);
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+
+  handlePrevButton = () => {
+    setNextBtnDisabled(false);
+    getFormStep > 0 ? setFormStep(getFormStep - 1) : null;
+  }
+
+  handleNextButton = () => {
+    setNextBtnDisabled(true);
+    getFormStep < AccountCreateConfig.FormSequence.length - 1
+      ? setFormStep(getFormStep + 1)
+      : null;
+
+    if (
+      AccountCreateConfig.FormSequence[getFormStep] ===
+      AccountCreateConfig.Forms.accountTypeSelectionForm
+    ) {
+      createMember();
+    }
   }
 
   getBasicFormData = form => {
@@ -106,100 +201,17 @@ export default function CreateAccount() {
         {getFormStep > 0 ? (
           <Button
             type="outline"
-            touched={() => {
-              setNextBtnDisabled(false);
-              getFormStep > 0 ? setFormStep(getFormStep - 1) : null;
-            }}
+            touched={handlePrevButton}
           >
             Previous
           </Button>
         ) : (
-          <View></View>
-        )}
+            <View></View>
+          )}
         <Button
           type="solid"
           disabled={isNextBtnDisabled}
-          touched={() => {
-            setNextBtnDisabled(true);
-            getFormStep < AccountCreateConfig.FormSequence.length - 1
-              ? setFormStep(getFormStep + 1)
-              : null;
-
-            if (
-              AccountCreateConfig.FormSequence[getFormStep] ===
-              AccountCreateConfig.Forms.accountTypeSelectionForm
-            ) {
-              const dob = new Date(
-                getVerifyIdentityForm.verifyIdentityForm.birthDate.value
-              ).toISOString();
-              const formData = {
-                loginId: getBasicForm.basicForm.username.value,
-                firstName: getBasicForm.basicForm.firstName.value,
-                middleName: "",
-                lastName: getBasicForm.basicForm.lastName.value,
-                suffix: null,
-                tid: getVerifyIdentityForm.verifyIdentityForm.ssn.value,
-                dateOfBirth: dob,
-                email1: getBasicForm.basicForm.email.value,
-                primaryAddress: {
-                  line1: getAddressForm.addressForm.address1.value,
-                  line2: getAddressForm.addressForm.address2.value,
-                  city: getAddressForm.addressForm.city.value,
-                  state: getAddressForm.addressForm.state.value,
-                  zipcode: getAddressForm.addressForm.zipcode.value,
-                  country: "US"
-                },
-                eveningTelephone: getAddressForm.addressForm.primaryPhone.value,
-                dayTelephone: getAddressForm.addressForm.secondaryPhone.value,
-                employmentStatus: "Unemployed",
-                employerAddress: null,
-                employerName: null,
-                occupationType: null,
-                finraAffiliated: false,
-                directorOrTenPercentShareholder: false,
-                directorOrTenPercentShareholderCompany: [],
-                netWorth: 2,
-                liquidNetWorth: 2,
-                annualIncome: 2,
-                citizenship: "C",
-                residenceCountry: "US",
-                accountType: "Individual",
-                memberAttributes: {},
-                mailingAddress: null
-              };
-              axios
-                .post(
-                  "https://apifoliofirst.uataws.foliofn.com/bod/member/create",
-                  formData
-                )
-                .then(response => {
-                  console.log(response.data);
-                  const accName =
-                    "Individual" + Math.floor(100 + Math.random() * 900);
-                  axios
-                    .post(
-                      "https://apifoliofirst.uataws.foliofn.com/bod/accounts/create",
-                      {
-                        accountName: accName,
-                        accountType: "I",
-                        billingPlanOid: "7133701811888608864",
-                        primaryAccountOwner:
-                          getBasicForm.basicForm.username.value,
-                        w9BackupWithholding: "N"
-                      }
-                    )
-                    .then(response => {
-                      console.log(response.data);
-                    })
-                    .catch(err => {
-                      console.log(err);
-                    });
-                })
-                .catch(err => {
-                  console.log(err);
-                });
-            }
-          }}
+          touched={handleNextButton}
         >
           Next
         </Button>

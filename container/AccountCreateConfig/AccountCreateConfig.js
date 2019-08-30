@@ -17,4 +17,7 @@ export default class AccountCreateConfig {
         this.Forms.accountTypeSelectionForm,
         this.Forms.getSignatureForm
     ]
+
+    static memberCreateURL = "https://apifoliofirst.uataws.foliofn.com/bod/member/create";
+    static accountCreateURL = "https://apifoliofirst.uataws.foliofn.com/bod/accounts/create";
 }

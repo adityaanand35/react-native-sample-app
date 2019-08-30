@@ -1,10 +1,10 @@
-import React, { Component } from "react";
+import React, { Component } from "./node_modules/react";
 import { StyleSheet, Text, View, FlatList } from "react-native";
-import axios from "axios";
+import axios from "./node_modules/axios";
 
 import Input from "../../../component/UI/Input/Input";
 import Button from "../../../component/UI/Button/button";
-import { ScrollView } from "react-native-gesture-handler";
+import { ScrollView } from "./node_modules/react-native-gesture-handler";
 
 class CustomerAgreement extends Component {
   state = {

@@ -1,6 +1,6 @@
-import React, { Component } from "react";
+import React, { Component } from "./node_modules/react";
 import { StyleSheet, Text, View, ScrollView } from "react-native";
-import axios from "axios";
+import axios from "./node_modules/axios";
 
 import Input from "../../../component/UI/Input/Input";
 

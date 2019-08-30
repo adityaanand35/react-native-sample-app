@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component } from "./node_modules/react";
 import { StyleSheet, Text, View, CheckBox, ScrollView } from "react-native";
 
 import Input from "../../../component/UI/Input/Input";
