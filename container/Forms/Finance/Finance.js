@@ -1,7 +1,7 @@
-import React, { Component } from "./node_modules/react";
+import React, { Component } from "react";
 import { StyleSheet, Text, View } from "react-native";
 
-import Input from "../../../component/UI/Input/Input";
+import Input from "../../../Component/UI/Input/Input";
 import {
   ListOfHouseholdIncome,
   ListOfLiquidNetWroth,
@@ -102,7 +102,7 @@ class Finance extends Component {
         financeForm: updatedFinanceForm,
         formIsValid: formIsValid
       });
-      return { financeForm: updatedfinanceForm, formIsValid: formIsValid };
+      return { financeForm: updatedFinanceForm, formIsValid: formIsValid };
     });
   };
 

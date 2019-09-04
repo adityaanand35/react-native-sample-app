@@ -6,7 +6,7 @@ export default class AccountCreateConfig {
         financeInfoForm: 'finance',
         employmentInfoForm: 'employment',
         accountTypeSelectionForm: 'accountType',
-        getSignatureForm: 'signature'
+        getSignatureForm: 'signature',
     }
        
     static FormSequence = [
@@ -15,9 +15,11 @@ export default class AccountCreateConfig {
         this.Forms.verifyIdentityInfoForm,
         this.Forms.financeInfoForm,
         this.Forms.accountTypeSelectionForm,
-        this.Forms.getSignatureForm
+        this.Forms.getSignatureForm,
     ]
 
-    static memberCreateURL = "https://apifoliofirst.uataws.foliofn.com/bod/member/create";
-    static accountCreateURL = "https://apifoliofirst.uataws.foliofn.com/bod/accounts/create";
+    static loginAvailable = "https://api.prodaws.foliofirst.com/bod/members/loginAvailable/";
+    static memberCreateURL = "https://api.prodaws.foliofirst.com/bod/member/create";
+    static accountCreateURL = "https://api.prodaws.foliofirst.com/bod/accounts/create";
+    static submitSignatureURL = "https://api.prodaws.foliofirst.com/bod/accounts/signature/create";
 }

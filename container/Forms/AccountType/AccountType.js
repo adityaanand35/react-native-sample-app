@@ -1,6 +1,6 @@
-import React, { Component } from "./node_modules/react";
+import React, { Component } from "react";
 import { StyleSheet, Text, View } from "react-native";
-import Input from "../../../component/UI/Input/Input";
+import Input from "../../../Component/UI/Input/Input";
 
 class AccountType extends Component {
   state = {

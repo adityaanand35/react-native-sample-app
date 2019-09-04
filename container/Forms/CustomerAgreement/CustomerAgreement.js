@@ -1,10 +1,10 @@
-import React, { Component } from "./node_modules/react";
+import React, { Component } from "react";
 import { StyleSheet, Text, View, FlatList } from "react-native";
-import axios from "./node_modules/axios";
+import axios from "axios";
 
-import Input from "../../../component/UI/Input/Input";
-import Button from "../../../component/UI/Button/button";
-import { ScrollView } from "./node_modules/react-native-gesture-handler";
+import Input from "../../../Component/UI/Input/Input";
+import Button from "../../../Component/UI/Button/button";
+import { ScrollView } from "react-native-gesture-handler";
 
 class CustomerAgreement extends Component {
   state = {
@@ -40,9 +40,9 @@ class CustomerAgreement extends Component {
     return isValid;
   }
 
-  inputChangedHandler = ({ event }, inputIdentifier) => {
+  inputChangedHandler = (event, inputIdentifier) => {
     const updatedSignatureForm = {
-      ...this.state.SignatureForm
+      ...this.state.signatureForm
     };
     const updatedFormElement = {
       ...updatedSignatureForm[inputIdentifier]
@@ -52,6 +52,7 @@ class CustomerAgreement extends Component {
       updatedFormElement.value,
       updatedFormElement.validation
     );
+    updatedFormElement.valid = this.props.fullName === event;
     updatedFormElement.touched = true;
     updatedSignatureForm[inputIdentifier] = updatedFormElement;
 
@@ -59,9 +60,13 @@ class CustomerAgreement extends Component {
     for (let inputIdentifier in updatedSignatureForm) {
       formIsValid = updatedSignatureForm[inputIdentifier].valid && formIsValid;
     }
-    this.setState({
-      SignatureForm: updatedSignatureForm,
-      formIsValid: formIsValid
+
+    this.setState(prevState => {
+      this.props.getData({
+        signatureForm: updatedSignatureForm,
+        formIsValid: formIsValid
+      });
+      return { signatureForm: updatedSignatureForm, formIsValid: formIsValid };
     });
   };
 
@@ -120,6 +125,7 @@ class CustomerAgreement extends Component {
               to avoid backup withholding.
             </Text>
             <Text style={styles.subHeader}>Electronic Signature</Text>
+            <Text>Use the keyboard to enter your full name:</Text>
             {formElementsArray.map(formElement => {
               return (
                 <View key={formElement.id}>
@@ -131,7 +137,6 @@ class CustomerAgreement extends Component {
                     shouldValidate={formElement.config.validation}
                     touched={formElement.config.touched}
                     SignaturePadError={this.onError}
-                    fullName={this.props.fullName}
                     changed={event =>
                       this.inputChangedHandler(event, formElement.id)
                     }
@@ -139,32 +144,7 @@ class CustomerAgreement extends Component {
                 </View>
               );
             })}
-            <Button
-              type="solid"
-              touched={() => {
-                axios
-                  .post(
-                    "https://apifoliofirst.uataws.foliofn.com/bod/accounts/signature/create",
-                    {
-                      accountNumber: "RJ7180400H",
-                      loginId: "hfghgfhfghgf",
-                      signatureData:
-                        "data:image/png;base64,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",
-                      signatureImageEncoding: "PNG",
-                      signatureMethod: "SIGNATURE_IMAGE",
-                      w9Withold: false
-                    }
-                  )
-                  .then(response => {
-                    console.log(response.data);
-                  })
-                  .catch(err => {
-                    console.log(err);
-                  });
-              }}
-            >
-              Submit Signature
-            </Button>
+            <Text>{this.props.fullName} (type exactly)</Text>
           </View>
         </ScrollView>
       </React.Fragment>

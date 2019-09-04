@@ -93,7 +93,6 @@ const input = props => {
     case "draw-signature":
       inputElement = (
         <View>
-          <Text>Use the keyboard to enter your full name:</Text>
           <TextField
             style={styles.inputField}
             onChangeText={props.changed}
@@ -103,7 +102,6 @@ const input = props => {
             error={validationError}
             {...props.elementConfig}
           />
-          <Text>{props.fullName} (type exactly)</Text>
         </View>
       );
       break;

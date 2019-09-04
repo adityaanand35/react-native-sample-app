@@ -1,8 +1,9 @@
-import React, { Component } from "./node_modules/react";
+import React, { Component } from "react";
 import { StyleSheet, Text, View, ScrollView } from "react-native";
-import axios from "./node_modules/axios";
+import axios from "axios";
 
-import Input from "../../../component/UI/Input/Input";
+import Input from "../../../Component/UI/Input/Input";
+import AccountCreateConfig from '../../AccountCreateConfig/AccountCreateConfig';
 
 class Basic extends Component {
   state = {
@@ -120,18 +121,16 @@ class Basic extends Component {
     });
 
     if (inputIdentifier === "username" && updatedFormElement.valid) {
-      let url =
-        "https://apifoliofirst.uataws.foliofn.com/bod/members/loginAvailable/";
       if (new Date().getTime() - this.state.httpCall.getTime() > 1000) {
-        this.getUsernameValidity(updatedBasicForm, updatedFormElement, url);
+        this.getUsernameValidity(updatedBasicForm, updatedFormElement);
         this.state.httpCall = new Date();
       }
     }
   };
 
-  getUsernameValidity(updatedBasicForm, updatedFormElement, url) {
+  getUsernameValidity(updatedBasicForm, updatedFormElement) {
     axios
-      .get(url + updatedFormElement.value)
+      .get(AccountCreateConfig.loginAvailable + updatedFormElement.value)
       .then(function(response) {
         // handle success
         console.log(response);

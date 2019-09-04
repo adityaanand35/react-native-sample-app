@@ -1,7 +1,7 @@
-import React, { Component } from "./node_modules/react";
+import React, { Component } from "react";
 import { StyleSheet, Text, View, CheckBox, ScrollView } from "react-native";
 
-import Input from "../../../component/UI/Input/Input";
+import Input from "../../../Component/UI/Input/Input";
 import { ListOfStates } from "./Address.const";
 
 class Address extends Component {
